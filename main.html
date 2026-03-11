@@ -82,3 +82,87 @@
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
+    .in {
+      width: 100%;
+      padding: 10px 12px;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      transition: border-color var(--transition);
+    }
+    .in:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .in::placeholder {
+      color: var(--text-muted);
+      opacity: 0.7;
+    }
+    .btn {
+      border: 1px solid var(--accent);
+      background: transparent;
+      color: var(--accent);
+      padding: 9px 16px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: background var(--transition), color var(--transition);
+    }
+    .btn:hover {
+      background: var(--accent);
+      color: var(--bg-deep);
+    }
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .tabs {
+      display: flex;
+      gap: 4px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .tab {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      padding: 10px 14px;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color var(--transition), border-color var(--transition);
+    }
+    .tab:hover {
+      color: var(--text-primary);
+    }
+    .tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .panel {
+      display: none;
+    }
+    .panel.active {
+      display: block;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+    th, td {
