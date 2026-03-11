@@ -1090,3 +1090,87 @@
       ensureContracts: ensureContracts,
       getDefaultClipFrom: getDefaultClipFrom,
       getDefaultClipCount: getDefaultClipCount,
+      getDefaultRecipeFrom: getDefaultRecipeFrom,
+      getDefaultRecipeCount: getDefaultRecipeCount,
+      getMaxClipCount: getMaxClipCount,
+      getMaxRecipeCount: getMaxRecipeCount,
+      getPhaseNames: getPhaseNames,
+      getStatusNames: getStatusNames,
+      formatBlockNumber: formatBlockNumber,
+      formatTimestamp: formatTimestamp,
+      truncateStr: truncateStr,
+      escapeHtml: escapeHtml,
+      createElement: createElement
+    };
+  })();
+  </script>
+  <!-- 0xJunkyBox: ReelJestCore (0x_vidgen_sup) and ClipRecipeLedger (0x_GenV_99) web interface.
+       Contract ABIs are embedded for globalStats, getClip, getRecipe, getGlobalConfig, getConfig.
+       Phases: Absent=0, Pending=1, InProgress=2, Done=3, Aborted=4.
+       Statuses: Empty=0, Draft=1, Live=2, InPoll=3, Retired=4.
+       All addresses must be EIP-55 checksummed; hex validator checks length and format.
+       Stats grid shows total clips, total recipes, cap ETH, used ETH, vault ETH.
+       Clip detail and Recipe detail panels load single record by ID.
+       Config panel loads either core or app config as JSON. -->
+  <script>
+  (function() {
+    var REFERENCE_PHASES = [
+      { value: 0, name: "Absent", desc: "No clip record" },
+      { value: 1, name: "Pending", desc: "Queued" },
+      { value: 2, name: "InProgress", desc: "Rendering" },
+      { value: 3, name: "Done", desc: "Completed" },
+      { value: 4, name: "Aborted", desc: "Cancelled" }
+    ];
+    var REFERENCE_STATUSES = [
+      { value: 0, name: "Empty", desc: "No recipe" },
+      { value: 1, name: "Draft", desc: "Draft" },
+      { value: 2, name: "Live", desc: "Active" },
+      { value: 3, name: "InPoll", desc: "In poll" },
+      { value: 4, name: "Retired", desc: "Retired" }
+    ];
+    function getPhaseByValue(v) {
+      var n = Number(v);
+      for (var i = 0; i < REFERENCE_PHASES.length; i++) {
+        if (REFERENCE_PHASES[i].value === n) return REFERENCE_PHASES[i];
+      }
+      return null;
+    }
+    function getStatusByValue(v) {
+      var n = Number(v);
+      for (var i = 0; i < REFERENCE_STATUSES.length; i++) {
+        if (REFERENCE_STATUSES[i].value === n) return REFERENCE_STATUSES[i];
+      }
+      return null;
+    }
+    function getAllPhaseNames() {
+      return REFERENCE_PHASES.map(function(p) { return p.name; });
+    }
+    function getAllStatusNames() {
+      return REFERENCE_STATUSES.map(function(s) { return s.name; });
+    }
+    window.JunkyBoxReference = {
+      REFERENCE_PHASES: REFERENCE_PHASES,
+      REFERENCE_STATUSES: REFERENCE_STATUSES,
+      getPhaseByValue: getPhaseByValue,
+      getStatusByValue: getStatusByValue,
+      getAllPhaseNames: getAllPhaseNames,
+      getAllStatusNames: getAllStatusNames
+    };
+  })();
+  </script>
+  <script>
+  (function() {
+    var CORE_METHODS = [
+      "globalStats", "getClip", "clipCounter", "getGlobalConfig", "getRoleAddresses",
+      "isClipDone", "computeFee", "totalFramesForClip", "getClipLabels", "getClipsByOwner",
+      "clipExists", "remainingClipSlots", "getGenesisBlock", "blocksSinceGenesis", "currentEpoch",
+      "getClipMetrics", "getFrames", "getClipSummaries", "getBulkClips", "getClipRecordFull",
+      "getPhaseName", "getPhaseFromClip", "globalStats", "getConstantsPack1", "getConstantsPack2"
+    ];
+    var APP_METHODS = [
+      "recipeCounter", "getRecipe", "getConfig", "getRoles", "getRecipeSummary",
+      "getPackHashes", "getCollaborators", "getAuthoredIds", "recipeExists", "remainingRecipeSlots",
+      "getLaunchTs", "getPoll", "didVote", "pollCanClose", "timeSinceLaunch",
+      "getSummaries", "getBulkSummaries", "getRecipeDataFull", "getPollDataStruct", "getConfigValues"
+    ];
+    function coreMethodList() { return CORE_METHODS.slice(); }
