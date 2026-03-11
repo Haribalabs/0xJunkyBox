@@ -418,3 +418,87 @@
       <div id="recipes" class="panel">
         <p class="section-title">Recipes (ClipRecipeLedger)</p>
         <div class="input-group">
+          <label for="recipeFrom">From recipe ID</label>
+          <input id="recipeFrom" class="in" placeholder="1" />
+        </div>
+        <div class="input-group">
+          <label for="recipeCount">Count</label>
+          <input id="recipeCount" class="in" placeholder="10" />
+        </div>
+        <div class="btn-row">
+          <button class="btn" id="loadRecipesBtn">Load recipes</button>
+        </div>
+        <table style="margin-top: 14px;">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Author</th>
+              <th>Status</th>
+              <th>Title</th>
+              <th>Pack hash</th>
+            </tr>
+          </thead>
+          <tbody id="recipesBody"></tbody>
+        </table>
+      </div>
+
+      <div id="validate" class="panel">
+        <p class="section-title">Hex / address validator</p>
+        <div class="input-group">
+          <label for="checkInput">Input (0x hex or address)</label>
+          <input id="checkInput" class="in" placeholder="0x..." />
+        </div>
+        <div class="btn-row">
+          <button class="btn" id="checkHexBtn">Validate</button>
+        </div>
+        <div id="checkStatus" class="mono" style="margin-top: 10px;"></div>
+      </div>
+
+      <div id="config" class="panel">
+        <p class="section-title">Contract config (read from chain)</p>
+        <div class="btn-row">
+          <button class="btn" id="loadConfigBtn">Load core config</button>
+          <button class="btn" id="loadAppConfigBtn">Load app config</button>
+        </div>
+        <pre id="configOut" class="mono" style="margin-top: 12px; padding: 12px; background: var(--bg-deep); border-radius: var(--radius-sm); overflow-x: auto; font-size: 0.75rem;"></pre>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Stats</h2>
+      <div class="stats-grid" id="statsGrid">
+        <div class="stat-box"><div class="value" id="statClips">-</div><div class="label">Total clips</div></div>
+        <div class="stat-box"><div class="value" id="statRecipes">-</div><div class="label">Total recipes</div></div>
+        <div class="stat-box"><div class="value" id="statCap">-</div><div class="label">Cap (ETH)</div></div>
+        <div class="stat-box"><div class="value" id="statUsed">-</div><div class="label">Used (ETH)</div></div>
+        <div class="stat-box"><div class="value" id="statVault">-</div><div class="label">Vault (ETH)</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Clip detail</h2>
+      <div class="input-group">
+        <label for="clipDetailId">Clip ID</label>
+        <input id="clipDetailId" class="in" placeholder="1" />
+      </div>
+      <div class="btn-row">
+        <button class="btn" id="loadClipDetailBtn">Load clip</button>
+      </div>
+      <div id="clipDetailOut" class="detail-panel" style="display:none;"></div>
+    </div>
+
+    <div class="card">
+      <h2>Recipe detail</h2>
+      <div class="input-group">
+        <label for="recipeDetailId">Recipe ID</label>
+        <input id="recipeDetailId" class="in" placeholder="1" />
+      </div>
+      <div class="btn-row">
+        <button class="btn" id="loadRecipeDetailBtn">Load recipe</button>
+      </div>
+      <div id="recipeDetailOut" class="detail-panel" style="display:none;"></div>
+    </div>
+
+    <div class="card">
+      <h2>Reference</h2>
+      <p class="section-title mb-1">ReelJestCore clip phases</p>
