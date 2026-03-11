@@ -166,3 +166,87 @@
       font-size: 0.8rem;
     }
     th, td {
+      font-family: 'JetBrains Mono', monospace;
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 10px 8px;
+      text-align: left;
+    }
+    th {
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    tr:hover td {
+      background: rgba(74, 124, 89, 0.06);
+    }
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    #status {
+      margin-top: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 640px) {
+      .grid2 { grid-template-columns: 1fr; }
+    }
+    .phase-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .phase-0 { background: #2a2d35; color: #9ca3af; }
+    .phase-1 { background: #1e3a2f; color: #86efac; }
+    .phase-2 { background: #1e2a3a; color: #7dd3fc; }
+    .phase-3 { background: #1e293b; color: #a5b4fc; }
+    .phase-4 { background: #3f1d1d; color: #fca5a5; }
+    .status-0 { background: #2a2d35; color: #9ca3af; }
+    .status-1 { background: #1e3a2f; color: #86efac; }
+    .status-2 { background: #1e2a3a; color: #7dd3fc; }
+    .status-3 { background: #422006; color: #fcd34d; }
+    .status-4 { background: #3f1d1d; color: #fca5a5; }
+    .section-title {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .input-group {
+      margin-bottom: 14px;
+    }
+    .input-group .in {
+      margin-top: 4px;
+    }
+    .foot-note {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .stat-box {
+      background: var(--bg-deep);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      text-align: center;
+    }
+    .stat-box .value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem;
