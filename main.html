@@ -586,3 +586,87 @@
         signer = await provider.getSigner();
         setStatus("connected");
       } catch (e) {
+        setStatus("connect failed");
+      }
+    }
+
+    function bindContracts() {
+      const coreAddr = el("coreAddr").value.trim();
+      const appAddr = el("appAddr").value.trim();
+      if (!ethers.isAddress(coreAddr) || !ethers.isAddress(appAddr)) {
+        setStatus("invalid addresses");
+        return false;
+      }
+      const readOnly = signer ? signer : provider;
+      coreContract = new ethers.Contract(coreAddr, CORE_ABI, readOnly);
+      appContract = new ethers.Contract(appAddr, APP_ABI, readOnly);
+      return true;
+    }
+
+    async function refresh() {
+      if (!coreContract || !appContract) return;
+      try {
+        const [totalClips, totalCap, totalUsed, vault, frozen] = await coreContract.globalStats();
+        const recipeCount = await appContract.recipeCounter();
+        setStatus(
+          "clips=" + totalClips.toString() +
+          " recipes=" + recipeCount.toString() +
+          " cap=" + weiToEth(totalCap) +
+          " used=" + weiToEth(totalUsed) +
+          " vault=" + weiToEth(vault) +
+          (frozen ? " FROZEN" : "")
+        );
+      } catch (e) {
+        setStatus("refresh failed");
+      }
+    }
+
+    async function loadClips() {
+      if (!coreContract) return;
+      const from = parseInt(el("clipFrom").value || "1", 10);
+      const count = Math.min(88, Math.max(1, parseInt(el("clipCount").value || "10", 10)));
+      const tbody = el("clipsBody");
+      tbody.innerHTML = "";
+      for (let i = 0; i < count; i++) {
+        const id = from + i;
+        try {
+          const c = await coreContract.getClip(id);
+          const phaseIdx = Number(c[10]);
+          const phaseName = PHASE_NAMES[phaseIdx] != null ? PHASE_NAMES[phaseIdx] : "?";
+          const tr = document.createElement("tr");
+          tr.innerHTML =
+            "<td>" + id + "</td>" +
+            "<td>" + shortAddr(c[1]) + "</td>" +
+            "<td><span class=\"phase-badge phase-" + phaseIdx + "\">" + phaseName + "</span></td>" +
+            "<td>" + weiToEth(c[6]) + "</td>" +
+            "<td>" + weiToEth(c[7]) + "</td>" +
+            "<td>" + shortHash(c[8]) + "</td>";
+          tbody.appendChild(tr);
+        } catch (_) {
+          const tr = document.createElement("tr");
+          tr.innerHTML = "<td>" + id + "</td><td colspan=\"5\">not found</td>";
+          tbody.appendChild(tr);
+        }
+      }
+    }
+
+    async function loadRecipes() {
+      if (!appContract) return;
+      const from = parseInt(el("recipeFrom").value || "1", 10);
+      const count = Math.min(80, Math.max(1, parseInt(el("recipeCount").value || "10", 10)));
+      const tbody = el("recipesBody");
+      tbody.innerHTML = "";
+      for (let i = 0; i < count; i++) {
+        const id = from + i;
+        try {
+          const r = await appContract.getRecipe(id);
+          const statusIdx = Number(r[10]);
+          const statusName = STATUS_NAMES[statusIdx] != null ? STATUS_NAMES[statusIdx] : "?";
+          const tr = document.createElement("tr");
+          tr.innerHTML =
+            "<td>" + id + "</td>" +
+            "<td>" + shortAddr(r[1]) + "</td>" +
+            "<td><span class=\"phase-badge status-" + statusIdx + "\">" + statusName + "</span></td>" +
+            "<td>" + String(r[2] || "").slice(0, 32) + "</td>" +
+            "<td>" + shortHash(r[3]) + "</td>";
+          tbody.appendChild(tr);
