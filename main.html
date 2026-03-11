@@ -1174,3 +1174,87 @@
       "getSummaries", "getBulkSummaries", "getRecipeDataFull", "getPollDataStruct", "getConfigValues"
     ];
     function coreMethodList() { return CORE_METHODS.slice(); }
+    function appMethodList() { return APP_METHODS.slice(); }
+    function hasCoreMethod(name) {
+      return CORE_METHODS.indexOf(name) >= 0;
+    }
+    function hasAppMethod(name) {
+      return APP_METHODS.indexOf(name) >= 0;
+    }
+    window.JunkyBoxMethodLists = {
+      CORE_METHODS: CORE_METHODS,
+      APP_METHODS: APP_METHODS,
+      coreMethodList: coreMethodList,
+      appMethodList: appMethodList,
+      hasCoreMethod: hasCoreMethod,
+      hasAppMethod: hasAppMethod
+    };
+  })();
+  </script>
+  <script>
+  (function() {
+    var DEFAULT_VALUES = {
+      clipFrom: "1",
+      clipCount: "10",
+      recipeFrom: "1",
+      recipeCount: "10",
+      maxClipCount: 88,
+      maxRecipeCount: 80
+    };
+    var CONTRACT_NAMES = {
+      core: "ReelJestCore",
+      coreAlias: "0x_vidgen_sup",
+      app: "ClipRecipeLedger",
+      appAlias: "0x_GenV_99"
+    };
+    var UI_STRINGS = {
+      statusIdle: "status: idle",
+      statusConnected: "status: connected",
+      statusNoWallet: "status: no wallet",
+      statusInvalidAddresses: "status: invalid addresses",
+      statusRefreshFailed: "status: refresh failed",
+      notFound: "not found",
+      error: "Error:",
+      loadClip: "Load clip",
+      loadRecipe: "Load recipe",
+      loadClips: "Load clips",
+      loadRecipes: "Load recipes",
+      validate: "Validate",
+      loadCoreConfig: "Load core config",
+      loadAppConfig: "Load app config",
+      connectWallet: "Connect wallet",
+      refreshStats: "Refresh stats",
+      totalClips: "Total clips",
+      totalRecipes: "Total recipes",
+      capEth: "Cap (ETH)",
+      usedEth: "Used (ETH)",
+      vaultEth: "Vault (ETH)"
+    };
+    function getDefault(key) {
+      return DEFAULT_VALUES[key] != null ? DEFAULT_VALUES[key] : null;
+    }
+    function getContractName(which) {
+      return CONTRACT_NAMES[which] || "";
+    }
+    function getUiString(key) {
+      return UI_STRINGS[key] != null ? UI_STRINGS[key] : key;
+    }
+    window.JunkyBoxDefaults = {
+      DEFAULT_VALUES: DEFAULT_VALUES,
+      CONTRACT_NAMES: CONTRACT_NAMES,
+      UI_STRINGS: UI_STRINGS,
+      getDefault: getDefault,
+      getContractName: getContractName,
+      getUiString: getUiString
+    };
+  })();
+  </script>
+  <script>
+  (function() {
+    function noop() {}
+    function identity(x) { return x; }
+    function defaultClipFromInput() {
+      var el = document.getElementById("clipFrom");
+      return el ? (el.value || "1") : "1";
+    }
+    function defaultClipCountInput() {
