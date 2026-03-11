@@ -754,3 +754,87 @@
         el("statRecipes").textContent = recipeCount.toString();
         el("statCap").textContent = weiToEth(totalCap);
         el("statUsed").textContent = weiToEth(totalUsed);
+        el("statVault").textContent = weiToEth(vault);
+      } catch (_) {
+        el("statClips").textContent = "-";
+        el("statRecipes").textContent = "-";
+        el("statCap").textContent = "-";
+        el("statUsed").textContent = "-";
+        el("statVault").textContent = "-";
+      }
+    }
+
+    async function loadClipDetail() {
+      if (!coreContract) return;
+      const id = el("clipDetailId").value.trim();
+      if (!id) return;
+      const out = el("clipDetailOut");
+      try {
+        const c = await coreContract.getClip(id);
+        const phaseIdx = Number(c[10]);
+        const phaseName = PHASE_NAMES[phaseIdx] != null ? PHASE_NAMES[phaseIdx] : "?";
+        out.style.display = "block";
+        out.innerHTML =
+          "<h3>Clip #" + id + "</h3>" +
+          "<div class=\"detail-row\"><span class=\"key\">Owner</span><span class=\"val\">" + c[1] + "</span></div>" +
+          "<div class=\"detail-row\"><span class=\"key\">Phase</span><span class=\"val\">" + phaseName + " (" + phaseIdx + ")</span></div>" +
+          "<div class=\"detail-row\"><span class=\"key\">Birth block</span><span class=\"val\">" + c[2].toString() + "</span></div>" +
+          "<div class=\"detail-row\"><span class=\"key\">Last touch block</span><span class=\"val\">" + c[3].toString() + "</span></div>" +
+          "<div class=\"detail-row\"><span class=\"key\">Goof score</span><span class=\"val\">" + c[4].toString() + "</span></div>" +
+          "<div class=\"detail-row\"><span class=\"key\">Vibe nonce</span><span class=\"val\">" + c[5].toString() + "</span></div>" +
+          "<div class=\"detail-row\"><span class=\"key\">Cap (Wei)</span><span class=\"val\">" + c[6].toString() + "</span></div>" +
+          "<div class=\"detail-row\"><span class=\"key\">Used (Wei)</span><span class=\"val\">" + c[7].toString() + "</span></div>" +
+          "<div class=\"detail-row\"><span class=\"key\">Script hash</span><span class=\"val\">" + c[8] + "</span></div>" +
+          "<div class=\"detail-row\"><span class=\"key\">Output hash</span><span class=\"val\">" + c[9] + "</span></div>" +
+          "<div class=\"detail-row\"><span class=\"key\">Adult OK</span><span class=\"val\">" + (c[11] ? "Yes" : "No") + "</span></div>";
+      } catch (e) {
+        out.style.display = "block";
+        out.innerHTML = "<p class=\"muted\">Error: " + (e.message || "not found") + "</p>";
+      }
+    }
+
+    async function loadRecipeDetail() {
+      if (!appContract) return;
+      const id = el("recipeDetailId").value.trim();
+      if (!id) return;
+      const out = el("recipeDetailOut");
+      try {
+        const r = await appContract.getRecipe(id);
+        const statusIdx = Number(r[10]);
+        const statusName = STATUS_NAMES[statusIdx] != null ? STATUS_NAMES[statusIdx] : "?";
+        out.style.display = "block";
+        out.innerHTML =
+          "<h3>Recipe #" + id + "</h3>" +
+          "<div class=\"detail-row\"><span class=\"key\">Author</span><span class=\"val\">" + r[1] + "</span></div>" +
+          "<div class=\"detail-row\"><span class=\"key\">Title</span><span class=\"val\">" + (r[2] || "") + "</span></div>" +
+          "<div class=\"detail-row\"><span class=\"key\">Status</span><span class=\"val\">" + statusName + " (" + statusIdx + ")</span></div>" +
+          "<div class=\"detail-row\"><span class=\"key\">Pack hash</span><span class=\"val\">" + r[3] + "</span></div>" +
+          "<div class=\"detail-row\"><span class=\"key\">Timeline hash</span><span class=\"val\">" + r[4] + "</span></div>" +
+          "<div class=\"detail-row\"><span class=\"key\">Duration (sec)</span><span class=\"val\">" + r[5].toString() + "</span></div>" +
+          "<div class=\"detail-row\"><span class=\"key\">Chuckle level</span><span class=\"val\">" + r[6].toString() + "</span></div>" +
+          "<div class=\"detail-row\"><span class=\"key\">Mix seed</span><span class=\"val\">" + r[7].toString() + "</span></div>" +
+          "<div class=\"detail-row\"><span class=\"key\">Created (ts)</span><span class=\"val\">" + r[8].toString() + "</span></div>" +
+          "<div class=\"detail-row\"><span class=\"key\">Modified (ts)</span><span class=\"val\">" + r[9].toString() + "</span></div>";
+      } catch (e) {
+        out.style.display = "block";
+        out.innerHTML = "<p class=\"muted\">Error: " + (e.message || "not found") + "</p>";
+      }
+    }
+
+    el("loadClipsBtn").addEventListener("click", loadClips);
+    el("loadRecipesBtn").addEventListener("click", loadRecipes);
+    el("checkHexBtn").addEventListener("click", validateHex);
+    el("loadConfigBtn").addEventListener("click", loadCoreConfig);
+    el("loadAppConfigBtn").addEventListener("click", loadAppConfig);
+    el("loadClipDetailBtn").addEventListener("click", loadClipDetail);
+    el("loadRecipeDetailBtn").addEventListener("click", loadRecipeDetail);
+
+    async function onRefresh() {
+      if (!provider) await connect();
+      if (bindContracts()) {
+        await refresh();
+        await updateStatsGrid();
+      }
+    }
+    el("refreshBtn").addEventListener("click", onRefresh);
+    var _connectBtn = el("connectBtn");
