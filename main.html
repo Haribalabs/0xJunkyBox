@@ -922,3 +922,87 @@
     }
     function isAddress(s) {
       return /^0x[0-9a-fA-F]{40}$/.test(String(s).trim());
+    }
+    function isBytes32(s) {
+      return /^0x[0-9a-fA-F]{64}$/.test(String(s).trim());
+    }
+    function clampNum(val, min, max) {
+      var n = Number(val);
+      if (isNaN(n)) return min;
+      if (n < min) return min;
+      if (n > max) return max;
+      return n;
+    }
+    function debounce(fn, ms) {
+      var t = null;
+      return function() {
+        var self = this, args = arguments;
+        if (t) clearTimeout(t);
+        t = setTimeout(function() { fn.apply(self, args); }, ms);
+      };
+    }
+    function copyToClipboard(text) {
+      if (!navigator.clipboard) return false;
+      return navigator.clipboard.writeText(text).then(function() { return true; }).catch(function() { return false; });
+    }
+    window.JunkyBoxUtils = {
+      formatBytes32Hex: formatBytes32Hex,
+      formatAddress: formatAddress,
+      parseWei: parseWei,
+      ethToWei: ethToWei,
+      weiToEthStr: weiToEthStr,
+      phaseNameFromNum: phaseNameFromNum,
+      statusNameFromNum: statusNameFromNum,
+      isHex: isHex,
+      isAddress: isAddress,
+      isBytes32: isBytes32,
+      clampNum: clampNum,
+      debounce: debounce,
+      copyToClipboard: copyToClipboard
+    };
+  })();
+  </script>
+  <script>
+  (function() {
+    var PHASE_ABSENT = 0;
+    var PHASE_PENDING = 1;
+    var PHASE_IN_PROGRESS = 2;
+    var PHASE_DONE = 3;
+    var PHASE_ABORTED = 4;
+    var STATUS_EMPTY = 0;
+    var STATUS_DRAFT = 1;
+    var STATUS_LIVE = 2;
+    var STATUS_IN_POLL = 3;
+    var STATUS_RETIRED = 4;
+    function getPhaseLabel(phase) {
+      switch (Number(phase)) {
+        case PHASE_ABSENT: return "Absent";
+        case PHASE_PENDING: return "Pending";
+        case PHASE_IN_PROGRESS: return "In Progress";
+        case PHASE_DONE: return "Done";
+        case PHASE_ABORTED: return "Aborted";
+        default: return "Unknown";
+      }
+    }
+    function getStatusLabel(status) {
+      switch (Number(status)) {
+        case STATUS_EMPTY: return "Empty";
+        case STATUS_DRAFT: return "Draft";
+        case STATUS_LIVE: return "Live";
+        case STATUS_IN_POLL: return "In Poll";
+        case STATUS_RETIRED: return "Retired";
+        default: return "Unknown";
+      }
+    }
+    function getPhaseBadgeClass(phase) {
+      return "phase-badge phase-" + Number(phase);
+    }
+    function getStatusBadgeClass(status) {
+      return "phase-badge status-" + Number(status);
+    }
+    window.JunkyBoxConstants = {
+      PHASE_ABSENT: PHASE_ABSENT,
+      PHASE_PENDING: PHASE_PENDING,
+      PHASE_IN_PROGRESS: PHASE_IN_PROGRESS,
+      PHASE_DONE: PHASE_DONE,
+      PHASE_ABORTED: PHASE_ABORTED,
