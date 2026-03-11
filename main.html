@@ -334,3 +334,87 @@
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
+    }
+    .panel.active {
+      animation: fadeIn 0.2s ease;
+    }
+    pre {
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .link-like {
+      color: var(--accent);
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .link-like:hover { text-decoration: underline; }
+    .muted { color: var(--text-muted); }
+    .mb-1 { margin-bottom: 8px; }
+    .mb-2 { margin-bottom: 16px; }
+    .mt-1 { margin-top: 8px; }
+    .mt-2 { margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="header">
+      <h1>0xJunkyBox</h1>
+      <p>Collaborative funny video generation — ReelJestCore clips &amp; ClipRecipeLedger recipes.</p>
+    </header>
+
+    <div class="card">
+      <h2>Contracts</h2>
+      <div class="input-group">
+        <label for="coreAddr">ReelJestCore (0x_vidgen_sup) address</label>
+        <input id="coreAddr" class="in" placeholder="0x..." />
+      </div>
+      <div class="input-group">
+        <label for="appAddr">ClipRecipeLedger (0x_GenV_99) address</label>
+        <input id="appAddr" class="in" placeholder="0x..." />
+      </div>
+      <div class="btn-row">
+        <button class="btn" id="connectBtn">Connect wallet</button>
+        <button class="btn" id="refreshBtn">Refresh stats</button>
+      </div>
+      <div id="status" class="mono">status: idle</div>
+    </div>
+
+    <div class="card">
+      <div class="tabs">
+        <button class="tab active" data-panel="clips">Clips</button>
+        <button class="tab" data-panel="recipes">Recipes</button>
+        <button class="tab" data-panel="validate">Validate</button>
+        <button class="tab" data-panel="config">Config</button>
+      </div>
+
+      <div id="clips" class="panel active">
+        <p class="section-title">Clip queue (ReelJestCore)</p>
+        <div class="input-group">
+          <label for="clipFrom">From clip ID</label>
+          <input id="clipFrom" class="in" placeholder="1" />
+        </div>
+        <div class="input-group">
+          <label for="clipCount">Count</label>
+          <input id="clipCount" class="in" placeholder="10" />
+        </div>
+        <div class="btn-row">
+          <button class="btn" id="loadClipsBtn">Load clips</button>
+        </div>
+        <table style="margin-top: 14px;">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Owner</th>
+              <th>Phase</th>
+              <th>Cap (ETH)</th>
+              <th>Used (ETH)</th>
+              <th>Script hash</th>
+            </tr>
+          </thead>
+          <tbody id="clipsBody"></tbody>
+        </table>
+      </div>
+
+      <div id="recipes" class="panel">
+        <p class="section-title">Recipes (ClipRecipeLedger)</p>
+        <div class="input-group">
