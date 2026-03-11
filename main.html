@@ -502,3 +502,87 @@
     <div class="card">
       <h2>Reference</h2>
       <p class="section-title mb-1">ReelJestCore clip phases</p>
+      <table style="margin-bottom: 16px;">
+        <thead><tr><th>Value</th><th>Name</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>Absent</td><td>No clip record</td></tr>
+          <tr><td>1</td><td>Pending</td><td>Queued, waiting for renderer</td></tr>
+          <tr><td>2</td><td>InProgress</td><td>Rendering in progress</td></tr>
+          <tr><td>3</td><td>Done</td><td>Completed successfully</td></tr>
+          <tr><td>4</td><td>Aborted</td><td>Cancelled or aborted</td></tr>
+        </tbody>
+      </table>
+      <p class="section-title mb-1">ClipRecipeLedger recipe statuses</p>
+      <table>
+        <thead><tr><th>Value</th><th>Name</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>Empty</td><td>No recipe</td></tr>
+          <tr><td>1</td><td>Draft</td><td>Draft state</td></tr>
+          <tr><td>2</td><td>Live</td><td>Active recipe</td></tr>
+          <tr><td>3</td><td>InPoll</td><td>Under governance poll</td></tr>
+          <tr><td>4</td><td>Retired</td><td>Archived / retired</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Contract methods (read-only)</h2>
+      <p class="muted mb-1">ReelJestCore: globalStats, getClip, getGlobalConfig, getRoleAddresses, getClipsByOwner, clipCounter, isClipDone, computeFee, totalFramesForClip, getClipLabels, clipExists, remainingClipSlots, getGenesisBlock, blocksSinceGenesis, currentEpoch.</p>
+      <p class="muted mb-1">ClipRecipeLedger: recipeCounter, getRecipe, getConfig, getRoles, getRecipeSummary, getPackHashes, getCollaborators, getAuthoredIds, recipeExists, remainingRecipeSlots, getLaunchTs, getPoll, didVote, pollCanClose, timeSinceLaunch.</p>
+      <p class="muted mb-1">Use Connect wallet and enter deployed ReelJestCore and ClipRecipeLedger addresses to read on-chain data. Stats and tables update after Refresh.</p>
+    </div>
+
+    <div class="card foot-note">
+      0xJunkyBox — ReelJestCore (0x_vidgen_sup) &amp; ClipRecipeLedger (0x_GenV_99). Connect wallet and enter contract addresses to interact.
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    const CORE_ABI = [
+      "function globalStats() view returns (uint256 totalClips, uint256 totalCapWei, uint256 totalUsedWei, uint256 vaultAccruedWei, bool isFrozen)",
+      "function getClip(uint256) view returns (tuple(uint256 clipId, address owner, uint64 birthBlock, uint64 lastTouchBlock, uint32 goofScore, uint32 vibeNonce, uint96 capWei, uint96 usedWei, bytes32 scriptHash, bytes32 outputHash, uint8 phase, bool adultOk))",
+      "function clipCounter() view returns (uint256)",
+      "function getGlobalConfig() view returns (uint256, uint256, uint256, uint256, uint256, uint256, uint256, bytes32)"
+    ];
+    const APP_ABI = [
+      "function recipeCounter() view returns (uint256)",
+      "function getRecipe(uint256) view returns (tuple(uint256 recipeId, address author, string title, bytes32 packHash, bytes32 timelineHash, uint32 durationSec, uint32 chuckleLevel, uint32 mixSeed, uint64 createdTs, uint64 modifiedTs, uint8 status))",
+      "function getConfig() view returns (uint256, uint256, uint256, uint256, uint256, uint256, uint256, bytes32)"
+    ];
+
+    let provider = null;
+    let signer = null;
+    let coreContract = null;
+    let appContract = null;
+
+    function el(id) { return document.getElementById(id); }
+    function setStatus(msg) { if (el("status")) el("status").textContent = "status: " + msg; }
+    function shortAddr(addr) {
+      if (!addr || addr.length < 14) return addr || "-";
+      return addr.slice(0, 8) + "\u2026" + addr.slice(-6);
+    }
+    function shortHash(h) {
+      if (!h || h.length < 18) return h || "-";
+      return h.slice(0, 10) + "\u2026" + h.slice(-8);
+    }
+    function weiToEth(v) {
+      try {
+        const n = typeof v === "bigint" ? v : BigInt(v);
+        return (Number(n) / 1e18).toFixed(6);
+      } catch (_) { return "0"; }
+    }
+    const PHASE_NAMES = ["Absent", "Pending", "InProgress", "Done", "Aborted"];
+    const STATUS_NAMES = ["Empty", "Draft", "Live", "InPoll", "Retired"];
+
+    async function connect() {
+      if (!window.ethereum) {
+        setStatus("no wallet");
+        return;
+      }
+      try {
+        provider = new ethers.BrowserProvider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        signer = await provider.getSigner();
+        setStatus("connected");
+      } catch (e) {
