@@ -1258,3 +1258,79 @@
       return el ? (el.value || "1") : "1";
     }
     function defaultClipCountInput() {
+      var el = document.getElementById("clipCount");
+      return el ? (el.value || "10") : "10";
+    }
+    function defaultRecipeFromInput() {
+      var el = document.getElementById("recipeFrom");
+      return el ? (el.value || "1") : "1";
+    }
+    function defaultRecipeCountInput() {
+      var el = document.getElementById("recipeCount");
+      return el ? (el.value || "10") : "10";
+    }
+    function clipDetailIdInput() {
+      var el = document.getElementById("clipDetailId");
+      return el ? el.value.trim() : "";
+    }
+    function recipeDetailIdInput() {
+      var el = document.getElementById("recipeDetailId");
+      return el ? el.value.trim() : "";
+    }
+    function coreAddrInput() {
+      var el = document.getElementById("coreAddr");
+      return el ? el.value.trim() : "";
+    }
+    function appAddrInput() {
+      var el = document.getElementById("appAddr");
+      return el ? el.value.trim() : "";
+    }
+    function setStatusText(msg) {
+      var el = document.getElementById("status");
+      if (el) el.textContent = "status: " + msg;
+    }
+    function setConfigOutput(text) {
+      var el = document.getElementById("configOut");
+      if (el) el.textContent = text;
+    }
+    function setCheckStatusText(text) {
+      var el = document.getElementById("checkStatus");
+      if (el) el.textContent = text;
+    }
+    window.JunkyBoxDOM = {
+      noop: noop,
+      identity: identity,
+      defaultClipFromInput: defaultClipFromInput,
+      defaultClipCountInput: defaultClipCountInput,
+      defaultRecipeFromInput: defaultRecipeFromInput,
+      defaultRecipeCountInput: defaultRecipeCountInput,
+      clipDetailIdInput: clipDetailIdInput,
+      recipeDetailIdInput: recipeDetailIdInput,
+      coreAddrInput: coreAddrInput,
+      appAddrInput: appAddrInput,
+      setStatusText: setStatusText,
+      setConfigOutput: setConfigOutput,
+      setCheckStatusText: setCheckStatusText
+    };
+  })();
+  </script>
+  <script>
+  (function() {
+    if (typeof window.JunkyBoxUtils !== "undefined" && typeof window.JunkyBoxConstants !== "undefined" && typeof window.JunkyBoxHelpers !== "undefined") {
+      window.JunkyBoxReady = true;
+    } else {
+      window.JunkyBoxReady = false;
+    }
+    window.JunkyBoxVersion = "0xJunkyBox.1.0";
+    window.JunkyBoxContracts = { core: "ReelJestCore", app: "ClipRecipeLedger" };
+    window.JunkyBoxBuild = "2025.03.09";
+  })();
+  </script>
+  <script>
+  (function() {
+    var LIMITS = { maxClipQuery: 88, maxRecipeQuery: 80, defaultPageSize: 10 };
+    window.JunkyBoxLimits = LIMITS;
+  })();
+  </script>
+  </body>
+</html>
